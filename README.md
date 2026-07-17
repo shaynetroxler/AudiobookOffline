@@ -16,6 +16,7 @@ Built because none of the existing Audiobookshelf clients do local pre-download 
 - Chapter list with jump-to-chapter
 - Variable playback speed
 - Spacebar play/pause on the player screen
+- Sleep timer (5–60 min, or end of chapter)
 - Progress reported back to the server as you listen, with local caching so resume position still works with no network connection
 
 ## Requirements
