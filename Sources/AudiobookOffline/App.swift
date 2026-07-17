@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 @main
 struct AudiobookOfflineApp: App {
@@ -13,6 +14,21 @@ struct AudiobookOfflineApp: App {
                         await appState.loadLibraries()
                     }
                 }
+        }
+        .commands {
+            CommandGroup(replacing: .help) {
+                Button("Keyboard Shortcuts") {
+                    let alert = NSAlert()
+                    alert.messageText = "Keyboard Shortcuts"
+                    alert.informativeText = "Space — Play / Pause (while a book is open)"
+                    alert.addButton(withTitle: "OK")
+                    alert.runModal()
+                }
+                Divider()
+                Button("AudiobookOffline on GitHub") {
+                    NSWorkspace.shared.open(URL(string: "https://github.com/shaynetroxler/AudiobookOffline")!)
+                }
+            }
         }
     }
 }
