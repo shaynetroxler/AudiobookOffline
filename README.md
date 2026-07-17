@@ -4,6 +4,10 @@ A native macOS app for [Audiobookshelf](https://github.com/advplyr/audiobookshel
 
 Built because none of the existing Audiobookshelf clients do local pre-download for offline use; they stream only.
 
+| Library | Player |
+|---|---|
+| ![Library list with covers, download status, and durations](screenshots/library.png) | ![Player screen with chapter list, transport controls, and speed menu](screenshots/player.png) |
+
 ## Features
 
 - Log in to any self-hosted Audiobookshelf server
