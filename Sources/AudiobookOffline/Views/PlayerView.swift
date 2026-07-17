@@ -154,6 +154,8 @@ struct PlayerView: View {
                     Text("\(viewModel.rate, specifier: "%.2g")× speed")
                 }
 
+                sleepTimerMenu
+
                 Spacer()
             }
             .padding(24)
@@ -218,6 +220,35 @@ struct PlayerView: View {
                     .font(.caption)
             }
             .buttonStyle(.plain)
+        }
+    }
+
+    @ViewBuilder
+    private var sleepTimerMenu: some View {
+        Menu {
+            Button("Off") { viewModel.setSleepTimer(.off) }
+            Divider()
+            ForEach([5, 10, 15, 30, 45, 60], id: \.self) { minutes in
+                Button("\(minutes) min") { viewModel.setSleepTimer(.duration(minutes: minutes)) }
+            }
+            Divider()
+            Button("End of Chapter") { viewModel.setSleepTimer(.endOfChapter) }
+        } label: {
+            Label(sleepTimerLabel, systemImage: "moon.zzz")
+        }
+    }
+
+    private var sleepTimerLabel: String {
+        switch viewModel.sleepTimerOption {
+        case .off:
+            return "Sleep Timer"
+        case .endOfChapter:
+            return "Sleep at chapter end"
+        case .duration:
+            guard let remaining = viewModel.sleepTimerRemaining else { return "Sleep Timer" }
+            let m = Int(remaining) / 60
+            let s = Int(remaining) % 60
+            return String(format: "Sleep in %d:%02d", m, s)
         }
     }
 

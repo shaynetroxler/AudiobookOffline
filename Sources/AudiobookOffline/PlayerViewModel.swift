@@ -2,6 +2,12 @@ import Foundation
 import AVFoundation
 import Observation
 
+enum SleepTimerOption: Equatable {
+    case off
+    case duration(minutes: Int)
+    case endOfChapter
+}
+
 @Observable
 @MainActor
 final class PlayerViewModel {
@@ -15,6 +21,9 @@ final class PlayerViewModel {
     private(set) var currentTrackIndex = 0
     private(set) var currentTimeInTrack: Double = 0
     private(set) var rate: Float = 1.0
+    private(set) var sleepTimerOption: SleepTimerOption = .off
+    private(set) var sleepTimerRemaining: Double?
+    private var sleepTimerTask: Task<Void, Never>?
 
     var globalCurrentTime: Double {
         (trackOffsets[safe: currentTrackIndex] ?? 0) + currentTimeInTrack
@@ -89,7 +98,11 @@ final class PlayerViewModel {
         }
         timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1), queue: .main) { [weak self] time in
             let seconds = time.seconds.isFinite ? time.seconds : 0
-            Task { @MainActor in self?.currentTimeInTrack = seconds }
+            Task { @MainActor in
+                guard let self else { return }
+                self.currentTimeInTrack = seconds
+                self.checkEndOfChapterSleepTimer()
+            }
         }
     }
 
@@ -127,6 +140,38 @@ final class PlayerViewModel {
     func setRate(_ newRate: Float) {
         rate = newRate
         if isPlaying { player.rate = newRate }
+    }
+
+    func setSleepTimer(_ option: SleepTimerOption) {
+        sleepTimerTask?.cancel()
+        sleepTimerTask = nil
+        sleepTimerOption = option
+        sleepTimerRemaining = nil
+
+        guard case .duration(let minutes) = option else { return }
+        let total = Double(minutes * 60)
+        sleepTimerRemaining = total
+        sleepTimerTask = Task { @MainActor [weak self] in
+            var remaining = total
+            while remaining > 0 {
+                try? await Task.sleep(for: .seconds(1))
+                guard !Task.isCancelled else { return }
+                remaining -= 1
+                self?.sleepTimerRemaining = remaining
+            }
+            guard !Task.isCancelled else { return }
+            self?.pause()
+            self?.sleepTimerOption = .off
+            self?.sleepTimerRemaining = nil
+        }
+    }
+
+    private func checkEndOfChapterSleepTimer() {
+        guard sleepTimerOption == .endOfChapter else { return }
+        guard let chapter = chapters.first(where: { $0.start <= globalCurrentTime && globalCurrentTime < $0.end }) else { return }
+        guard globalCurrentTime >= chapter.end else { return }
+        pause()
+        sleepTimerOption = .off
     }
 
     func skip(_ seconds: Double) {
@@ -181,6 +226,7 @@ final class PlayerViewModel {
 
     func teardown() {
         reportTask?.cancel()
+        sleepTimerTask?.cancel()
         if let timeObserver { player.removeTimeObserver(timeObserver) }
         if let endObserver { NotificationCenter.default.removeObserver(endObserver) }
         reportProgress(isFinished: false)
