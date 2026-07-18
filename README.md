@@ -8,10 +8,18 @@ Built because none of the existing Audiobookshelf clients do local pre-download 
 |---|---|
 | ![Library list with covers, download status, and durations](screenshots/library.png) | ![Player screen with chapter list, transport controls, and speed menu](screenshots/player.png) |
 
+## Download
+
+Grab the latest build from the [Releases page](https://github.com/shaynetroxler/AudiobookOffline/releases/latest) — download `AudiobookOffline.zip`, unzip, and drag `AudiobookOffline.app` to your Applications folder.
+
+On first launch, macOS will say it can't verify the developer (this app isn't notarized — that requires a paid Apple Developer account). Go to **System Settings → Privacy & Security** and click **"Open Anyway"** next to the AudiobookOffline message. You only need to do this once.
+
 ## Features
 
 - Log in to any self-hosted Audiobookshelf server
 - Browse your library, search by title or author
+- Browse by Series or Collections (created on the server; the app just displays them)
+- Library stats dashboard — item/hour/author/size/track counts, top genres and authors, longest and largest items
 - Stream playback, or download a book for fully offline listening (list view and player both have a download control)
 - Chapter list with jump-to-chapter
 - Variable playback speed
@@ -24,38 +32,13 @@ Built because none of the existing Audiobookshelf clients do local pre-download 
 - macOS 14+
 - An Audiobookshelf server you can reach (local network or otherwise)
 
-## Building
+## Building from source
 
-This is a Swift Package Manager project — no Xcode project file needed.
+Open `AudiobookOffline.xcodeproj` in Xcode and hit Run. The project is generated with [XcodeGen](https://github.com/yonaskolb/XcodeGen) from `project.yml` — if you change targets/settings, edit `project.yml` and run `xcodegen generate` rather than editing the `.xcodeproj` directly.
 
-```
-swift build
-swift run
-```
+Note: `project.yml` has a `DEVELOPMENT_TEAM` set to the original author's Apple ID. If you're building this yourself, change the Team in Xcode's Signing & Capabilities tab to your own (a free Apple ID / Personal Team is enough for local builds).
 
-`swift run`/a bare built binary will launch **without a visible window**, because macOS treats an unbundled executable as background-only. To get a normal windowed app, wrap the build output in a minimal `.app` bundle:
-
-```
-APP=.build/AudiobookOffline.app
-mkdir -p "$APP/Contents/MacOS"
-cp .build/arm64-apple-macosx/debug/AudiobookOffline "$APP/Contents/MacOS/AudiobookOffline"
-cat > "$APP/Contents/Info.plist" <<'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleExecutable</key><string>AudiobookOffline</string>
-    <key>CFBundleIdentifier</key><string>com.example.audiobookoffline</string>
-    <key>CFBundleName</key><string>AudiobookOffline</string>
-    <key>CFBundlePackageType</key><string>APPL</string>
-    <key>LSMinimumSystemVersion</key><string>14.0</string>
-    <key>NSHighResolutionCapable</key><true/>
-</dict>
-</plist>
-EOF
-codesign --force --deep --sign - "$APP"
-open "$APP"
-```
+The underlying Swift Package (`Package.swift`) also still builds standalone via `swift build`, which is what CI uses to validate the code compiles — but it produces a bare unbundled executable, not a real double-clickable `.app`, so building via Xcode is the recommended path.
 
 ## Status
 
