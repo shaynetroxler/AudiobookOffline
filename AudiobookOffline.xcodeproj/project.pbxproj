@@ -1,0 +1,408 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D77D00A42BC0792ACD0A400 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB6249CD32E205F50720CC /* App.swift */; };
+		14880161478637EEBBBA081D /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA90986B46DD3B05F40B65E1 /* StatsView.swift */; };
+		1BE7FF03427071F99DB9BB53 /* LibraryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5AA16717FF107EAE689464 /* LibraryListViewModel.swift */; };
+		3729E4A9FEA7A14BE1CF21A3 /* PlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4F582C0F4F838AD60FF0F4 /* PlayerViewModel.swift */; };
+		3A0ADD523CE60061DA9B6711 /* ProgressSyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080CE41F9D1D529C19785861 /* ProgressSyncQueue.swift */; };
+		3A41463ED349EC91E3508F62 /* SeriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 480DB5E029378B5AAEED56D5 /* SeriesListView.swift */; };
+		3BF8DA613970B1FA3D9D4D2A /* LibraryRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54060B77B274F8DC5705A758 /* LibraryRoute.swift */; };
+		4B462DA4E635B6D4BB3482DB /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E248A2894B715D79FFE4FD3 /* KeychainStore.swift */; };
+		4F6446179FCE28EA341141D8 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F315413EA71DC9055CE34B /* DownloadManager.swift */; };
+		515EA80E1CF29EECEDEC9FED /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CFC9F65A0506BE06C4B517 /* LoginView.swift */; };
+		6A2CF23F03D9FD5BE07BFBE7 /* SeriesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29511818F4B8A4DD3DE7CE44 /* SeriesListViewModel.swift */; };
+		7D24B1E1B2A07A6EFCC2B7F5 /* SeriesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396B4EC5951C3EE93776838 /* SeriesDetailView.swift */; };
+		7F47C388161088C8B2B10358 /* CollectionsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6771EA706BF9B2BC0B6592ED /* CollectionsListViewModel.swift */; };
+		85747BD6697568465BDBC1F4 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317FAE84DABBA6BB4F1DA2E5 /* PlayerView.swift */; };
+		9988EF441AFC0C7069FAABD9 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9464793A3477D0A806CB5CC0 /* LibraryView.swift */; };
+		B86137D1FF86D5805398C9F9 /* CollectionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CEDECDF7DB46BF73939B70 /* CollectionsListView.swift */; };
+		BC4F210CE62EDB141A578400 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93C4D7E8875CC11633013FD5 /* Assets.xcassets */; };
+		C627A47CFA4D3D5EA91E10B8 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13143AF67508D7EA3007855C /* Models.swift */; };
+		C72F7446840263C155F7AB3D /* ItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A3BD86EB051DB54998DE43 /* ItemRow.swift */; };
+		D26E954F97E3C8BDFF76B217 /* ABSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A390B8DFCCED01F1EF0AE505 /* ABSClient.swift */; };
+		D34F742091612237CFE26B36 /* CollectionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED325AC1E128E6ADF9065B /* CollectionDetailView.swift */; };
+		D70D5B04F549EEF5214B6BBE /* FileDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE52ADE34DA5765591C95E71 /* FileDownloader.swift */; };
+		E16494C1E13B30581446A262 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0394A0845396E93E8FC18621 /* StatsViewModel.swift */; };
+		FAE9C2DD201F48A8B25442F8 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC34105399E382247D5FADD6 /* AppState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0394A0845396E93E8FC18621 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
+		080CE41F9D1D529C19785861 /* ProgressSyncQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSyncQueue.swift; sourceTree = "<group>"; };
+		13143AF67508D7EA3007855C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		1ECB6249CD32E205F50720CC /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		29511818F4B8A4DD3DE7CE44 /* SeriesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesListViewModel.swift; sourceTree = "<group>"; };
+		317FAE84DABBA6BB4F1DA2E5 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		31CEDECDF7DB46BF73939B70 /* CollectionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsListView.swift; sourceTree = "<group>"; };
+		3E248A2894B715D79FFE4FD3 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		40F315413EA71DC9055CE34B /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		480DB5E029378B5AAEED56D5 /* SeriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesListView.swift; sourceTree = "<group>"; };
+		4B5AA16717FF107EAE689464 /* LibraryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryListViewModel.swift; sourceTree = "<group>"; };
+		54060B77B274F8DC5705A758 /* LibraryRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRoute.swift; sourceTree = "<group>"; };
+		56CFC9F65A0506BE06C4B517 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6771EA706BF9B2BC0B6592ED /* CollectionsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsListViewModel.swift; sourceTree = "<group>"; };
+		7396B4EC5951C3EE93776838 /* SeriesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesDetailView.swift; sourceTree = "<group>"; };
+		8AED325AC1E128E6ADF9065B /* CollectionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailView.swift; sourceTree = "<group>"; };
+		93C4D7E8875CC11633013FD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9464793A3477D0A806CB5CC0 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		A390B8DFCCED01F1EF0AE505 /* ABSClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABSClient.swift; sourceTree = "<group>"; };
+		B3A3BD86EB051DB54998DE43 /* ItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRow.swift; sourceTree = "<group>"; };
+		BC34105399E382247D5FADD6 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		CD4F582C0F4F838AD60FF0F4 /* PlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewModel.swift; sourceTree = "<group>"; };
+		CE52ADE34DA5765591C95E71 /* FileDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.swift; sourceTree = "<group>"; };
+		DDB2934ABB652878427F0589 /* AudiobookOffline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudiobookOffline.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA90986B46DD3B05F40B65E1 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		15E162D420502B004A00EF0F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8AED325AC1E128E6ADF9065B /* CollectionDetailView.swift */,
+				31CEDECDF7DB46BF73939B70 /* CollectionsListView.swift */,
+				B3A3BD86EB051DB54998DE43 /* ItemRow.swift */,
+				9464793A3477D0A806CB5CC0 /* LibraryView.swift */,
+				56CFC9F65A0506BE06C4B517 /* LoginView.swift */,
+				317FAE84DABBA6BB4F1DA2E5 /* PlayerView.swift */,
+				7396B4EC5951C3EE93776838 /* SeriesDetailView.swift */,
+				480DB5E029378B5AAEED56D5 /* SeriesListView.swift */,
+				EA90986B46DD3B05F40B65E1 /* StatsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		333C56D1F677CFE795C4148F /* AudiobookOffline */ = {
+			isa = PBXGroup;
+			children = (
+				A390B8DFCCED01F1EF0AE505 /* ABSClient.swift */,
+				1ECB6249CD32E205F50720CC /* App.swift */,
+				BC34105399E382247D5FADD6 /* AppState.swift */,
+				6771EA706BF9B2BC0B6592ED /* CollectionsListViewModel.swift */,
+				40F315413EA71DC9055CE34B /* DownloadManager.swift */,
+				CE52ADE34DA5765591C95E71 /* FileDownloader.swift */,
+				3E248A2894B715D79FFE4FD3 /* KeychainStore.swift */,
+				4B5AA16717FF107EAE689464 /* LibraryListViewModel.swift */,
+				54060B77B274F8DC5705A758 /* LibraryRoute.swift */,
+				13143AF67508D7EA3007855C /* Models.swift */,
+				CD4F582C0F4F838AD60FF0F4 /* PlayerViewModel.swift */,
+				080CE41F9D1D529C19785861 /* ProgressSyncQueue.swift */,
+				29511818F4B8A4DD3DE7CE44 /* SeriesListViewModel.swift */,
+				0394A0845396E93E8FC18621 /* StatsViewModel.swift */,
+				15E162D420502B004A00EF0F /* Views */,
+			);
+			name = AudiobookOffline;
+			path = Sources/AudiobookOffline;
+			sourceTree = "<group>";
+		};
+		8A9D6919D1524E9ACE78F7FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDB2934ABB652878427F0589 /* AudiobookOffline.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8DA56F27F3796DB8D386EA68 = {
+			isa = PBXGroup;
+			children = (
+				93C4D7E8875CC11633013FD5 /* Assets.xcassets */,
+				333C56D1F677CFE795C4148F /* AudiobookOffline */,
+				8A9D6919D1524E9ACE78F7FC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2F5B5AF454AC5DA51664E882 /* AudiobookOffline */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E358AF936D15EEB8491300B4 /* Build configuration list for PBXNativeTarget "AudiobookOffline" */;
+			buildPhases = (
+				E9409540BE5730BE8D14C285 /* Sources */,
+				41E9EF89525AF48ED47C3ACE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudiobookOffline;
+			packageProductDependencies = (
+			);
+			productName = AudiobookOffline;
+			productReference = DDB2934ABB652878427F0589 /* AudiobookOffline.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B3A001B30C31E0AFC6210192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					2F5B5AF454AC5DA51664E882 = {
+						DevelopmentTeam = 623K7V59S2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FC276C1DED34C3FBD1A21FE2 /* Build configuration list for PBXProject "AudiobookOffline" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8DA56F27F3796DB8D386EA68;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8A9D6919D1524E9ACE78F7FC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2F5B5AF454AC5DA51664E882 /* AudiobookOffline */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41E9EF89525AF48ED47C3ACE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC4F210CE62EDB141A578400 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E9409540BE5730BE8D14C285 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D26E954F97E3C8BDFF76B217 /* ABSClient.swift in Sources */,
+				0D77D00A42BC0792ACD0A400 /* App.swift in Sources */,
+				FAE9C2DD201F48A8B25442F8 /* AppState.swift in Sources */,
+				D34F742091612237CFE26B36 /* CollectionDetailView.swift in Sources */,
+				B86137D1FF86D5805398C9F9 /* CollectionsListView.swift in Sources */,
+				7F47C388161088C8B2B10358 /* CollectionsListViewModel.swift in Sources */,
+				4F6446179FCE28EA341141D8 /* DownloadManager.swift in Sources */,
+				D70D5B04F549EEF5214B6BBE /* FileDownloader.swift in Sources */,
+				C72F7446840263C155F7AB3D /* ItemRow.swift in Sources */,
+				4B462DA4E635B6D4BB3482DB /* KeychainStore.swift in Sources */,
+				1BE7FF03427071F99DB9BB53 /* LibraryListViewModel.swift in Sources */,
+				3BF8DA613970B1FA3D9D4D2A /* LibraryRoute.swift in Sources */,
+				9988EF441AFC0C7069FAABD9 /* LibraryView.swift in Sources */,
+				515EA80E1CF29EECEDEC9FED /* LoginView.swift in Sources */,
+				C627A47CFA4D3D5EA91E10B8 /* Models.swift in Sources */,
+				85747BD6697568465BDBC1F4 /* PlayerView.swift in Sources */,
+				3729E4A9FEA7A14BE1CF21A3 /* PlayerViewModel.swift in Sources */,
+				3A0ADD523CE60061DA9B6711 /* ProgressSyncQueue.swift in Sources */,
+				7D24B1E1B2A07A6EFCC2B7F5 /* SeriesDetailView.swift in Sources */,
+				3A41463ED349EC91E3508F62 /* SeriesListView.swift in Sources */,
+				6A2CF23F03D9FD5BE07BFBE7 /* SeriesListViewModel.swift in Sources */,
+				14880161478637EEBBBA081D /* StatsView.swift in Sources */,
+				E16494C1E13B30581446A262 /* StatsViewModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		308B5A590F9FC5F3F6956B16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		31FDC51F9C93F8643A4FB41A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 623K7V59S2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHighResolutionCapable = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shayne.audiobookoffline;
+				PRODUCT_NAME = AudiobookOffline;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		7A42B63F0A596E373ACEAC71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		ABE226370E5A668F9BB33D73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 623K7V59S2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHighResolutionCapable = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shayne.audiobookoffline;
+				PRODUCT_NAME = AudiobookOffline;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E358AF936D15EEB8491300B4 /* Build configuration list for PBXNativeTarget "AudiobookOffline" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31FDC51F9C93F8643A4FB41A /* Debug */,
+				ABE226370E5A668F9BB33D73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FC276C1DED34C3FBD1A21FE2 /* Build configuration list for PBXProject "AudiobookOffline" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				308B5A590F9FC5F3F6956B16 /* Debug */,
+				7A42B63F0A596E373ACEAC71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B3A001B30C31E0AFC6210192 /* Project object */;
+}

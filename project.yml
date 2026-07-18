@@ -1,0 +1,23 @@
+name: AudiobookOffline
+options:
+  bundleIdPrefix: com.shayne
+targets:
+  AudiobookOffline:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: Sources/AudiobookOffline
+      - path: Assets.xcassets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.shayne.audiobookoffline
+        PRODUCT_NAME: AudiobookOffline
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_NSHighResolutionCapable: true
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: 623K7V59S2
+        SWIFT_VERSION: "5.10"
