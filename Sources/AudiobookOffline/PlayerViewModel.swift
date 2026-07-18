@@ -1,5 +1,7 @@
 import Foundation
 import AVFoundation
+import AppKit
+import MediaPlayer
 import Observation
 
 enum SleepTimerOption: Equatable {
@@ -39,10 +41,14 @@ final class PlayerViewModel {
 
     private let client: ABSClient?
     private let progressQueue: ProgressSyncQueue
+    private let authorName: String?
+    private let artworkURL: URL?
+    private var artworkImage: NSImage?
 
     init(
         itemId: String, title: String, chapters: [Chapter], tracks: [Track], trackURLs: [URL],
-        isOfflinePlayback: Bool, resumeAt: Double, client: ABSClient?, progressQueue: ProgressSyncQueue
+        isOfflinePlayback: Bool, resumeAt: Double, client: ABSClient?, progressQueue: ProgressSyncQueue,
+        authorName: String? = nil, artworkURL: URL? = nil
     ) {
         self.itemId = itemId
         self.title = title
@@ -52,6 +58,8 @@ final class PlayerViewModel {
         self.isOfflinePlayback = isOfflinePlayback
         self.client = client
         self.progressQueue = progressQueue
+        self.authorName = authorName
+        self.artworkURL = artworkURL
 
         var offsets: [Double] = []
         var running: Double = 0
@@ -64,6 +72,9 @@ final class PlayerViewModel {
 
         observeTrackEnd()
         seekGlobal(resumeAt, autoplayAfter: false)
+        setupRemoteCommands()
+        loadArtwork()
+        updateNowPlayingInfo()
     }
 
     private func observeTrackEnd() {
@@ -102,6 +113,7 @@ final class PlayerViewModel {
                 guard let self else { return }
                 self.currentTimeInTrack = seconds
                 self.checkEndOfChapterSleepTimer()
+                self.updateNowPlayingInfo()
             }
         }
     }
@@ -124,6 +136,7 @@ final class PlayerViewModel {
         }
         isPlaying = true
         startReportingLoop()
+        updateNowPlayingInfo()
     }
 
     func pause() {
@@ -131,6 +144,7 @@ final class PlayerViewModel {
         isPlaying = false
         reportTask?.cancel()
         reportProgress(isFinished: false)
+        updateNowPlayingInfo()
     }
 
     func togglePlayPause() {
@@ -140,6 +154,7 @@ final class PlayerViewModel {
     func setRate(_ newRate: Float) {
         rate = newRate
         if isPlaying { player.rate = newRate }
+        updateNowPlayingInfo()
     }
 
     func setSleepTimer(_ option: SleepTimerOption) {
@@ -224,6 +239,26 @@ final class PlayerViewModel {
         }
     }
 
+    /// Re-checks the server's progress for this item and jumps to it if it's newer than
+    /// what this device knows about. Only runs while paused so it never yanks the
+    /// position out from under someone actively listening on this device.
+    func reconcileWithServer() async {
+        guard !isPlaying, let client else { return }
+        do {
+            guard let serverProgress = try await client.mediaProgress().first(where: { $0.libraryItemId == itemId }) else { return }
+            guard abs(serverProgress.currentTime - globalCurrentTime) > 2 else { return }
+            if let serverLastUpdate = serverProgress.lastUpdate {
+                let serverDate = Date(timeIntervalSince1970: serverLastUpdate / 1000)
+                if let localUpdate = progressQueue.lastPosition(for: itemId), localUpdate.timestamp >= serverDate {
+                    return
+                }
+            }
+            seekGlobal(serverProgress.currentTime, autoplayAfter: false)
+        } catch {
+            print("AudiobookOffline: failed to reconcile progress for \(itemId): \(error)")
+        }
+    }
+
     func teardown() {
         reportTask?.cancel()
         sleepTimerTask?.cancel()
@@ -231,6 +266,81 @@ final class PlayerViewModel {
         if let endObserver { NotificationCenter.default.removeObserver(endObserver) }
         reportProgress(isFinished: false)
         player.pause()
+        clearRemoteCommands()
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+    }
+
+    // MARK: - Now Playing (Control Center / Dynamic Island widgets like Alcove)
+
+    private func setupRemoteCommands() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+
+        commandCenter.playCommand.addTarget { [weak self] _ in
+            guard let self else { return .commandFailed }
+            self.play()
+            return .success
+        }
+        commandCenter.pauseCommand.addTarget { [weak self] _ in
+            guard let self else { return .commandFailed }
+            self.pause()
+            return .success
+        }
+        commandCenter.togglePlayPauseCommand.addTarget { [weak self] _ in
+            guard let self else { return .commandFailed }
+            self.togglePlayPause()
+            return .success
+        }
+        commandCenter.skipForwardCommand.preferredIntervals = [30]
+        commandCenter.skipForwardCommand.addTarget { [weak self] _ in
+            guard let self else { return .commandFailed }
+            self.skip(30)
+            return .success
+        }
+        commandCenter.skipBackwardCommand.preferredIntervals = [30]
+        commandCenter.skipBackwardCommand.addTarget { [weak self] _ in
+            guard let self else { return .commandFailed }
+            self.skip(-30)
+            return .success
+        }
+        commandCenter.changePlaybackPositionCommand.addTarget { [weak self] event in
+            guard let self, let event = event as? MPChangePlaybackPositionCommandEvent else { return .commandFailed }
+            self.seekGlobal(event.positionTime, autoplayAfter: self.isPlaying)
+            return .success
+        }
+    }
+
+    private func clearRemoteCommands() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.removeTarget(nil)
+        commandCenter.pauseCommand.removeTarget(nil)
+        commandCenter.togglePlayPauseCommand.removeTarget(nil)
+        commandCenter.skipForwardCommand.removeTarget(nil)
+        commandCenter.skipBackwardCommand.removeTarget(nil)
+        commandCenter.changePlaybackPositionCommand.removeTarget(nil)
+    }
+
+    private func loadArtwork() {
+        guard let artworkURL else { return }
+        Task { [weak self, artworkURL] in
+            guard let (data, _) = try? await URLSession.shared.data(from: artworkURL) else { return }
+            guard let image = NSImage(data: data) else { return }
+            self?.artworkImage = image
+            self?.updateNowPlayingInfo()
+        }
+    }
+
+    private func updateNowPlayingInfo() {
+        var info: [String: Any] = [:]
+        info[MPMediaItemPropertyTitle] = title
+        if let authorName { info[MPMediaItemPropertyArtist] = authorName }
+        info[MPMediaItemPropertyPlaybackDuration] = totalDuration
+        info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = globalCurrentTime
+        info[MPNowPlayingInfoPropertyPlaybackRate] = isPlaying ? Double(rate) : 0
+        info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
+        if let artworkImage {
+            info[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: artworkImage.size) { _ in artworkImage }
+        }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
 }
 

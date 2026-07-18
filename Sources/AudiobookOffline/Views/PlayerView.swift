@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 struct PlayerHostView: View {
     @Environment(AppState.self) private var appState
@@ -20,6 +21,9 @@ struct PlayerHostView: View {
         }
         .task { await load() }
         .onDisappear { viewModel?.teardown() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            Task { await viewModel?.reconcileWithServer() }
+        }
     }
 
     private func load() async {
@@ -75,7 +79,9 @@ struct PlayerHostView: View {
             isOfflinePlayback: localURLs != nil,
             resumeAt: resumeAt,
             client: appState.client,
-            progressQueue: appState.progressQueue
+            progressQueue: appState.progressQueue,
+            authorName: detail.media.metadata.authorName,
+            artworkURL: appState.client?.coverURL(itemId: itemId)
         )
     }
 }
@@ -86,6 +92,7 @@ struct PlayerView: View {
     let detail: LibraryItemDetail?
 
     @State private var downloadError: String?
+    @State private var removeFromContinueListeningError: String?
     @FocusState private var isFocused: Bool
 
     var body: some View {
@@ -191,11 +198,38 @@ struct PlayerView: View {
             viewModel.togglePlayPause()
             return .handled
         }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Menu {
+                    Button("Remove from Continue Listening", role: .destructive) {
+                        removeFromContinueListening()
+                    }
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
         .alert("Download failed", isPresented: .constant(downloadError != nil), actions: {
             Button("OK") { downloadError = nil }
         }, message: {
             Text(downloadError ?? "")
         })
+        .alert("Couldn't remove from Continue Listening", isPresented: .constant(removeFromContinueListeningError != nil), actions: {
+            Button("OK") { removeFromContinueListeningError = nil }
+        }, message: {
+            Text(removeFromContinueListeningError ?? "")
+        })
+    }
+
+    private func removeFromContinueListening() {
+        guard let client = appState.client else { return }
+        Task {
+            do {
+                try await client.removeFromContinueListening(itemId: viewModel.itemId)
+            } catch {
+                removeFromContinueListeningError = error.localizedDescription
+            }
+        }
     }
 
     @ViewBuilder

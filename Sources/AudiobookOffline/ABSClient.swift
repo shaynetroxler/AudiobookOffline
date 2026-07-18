@@ -117,6 +117,34 @@ struct ABSClient {
         return try JSONDecoder().decode(MeResponse.self, from: data).mediaProgress
     }
 
+    /// The same "Continue Listening" shelf shown on the ABS server's own home page —
+    /// unlike `/api/me/items-in-progress` (Android Auto's endpoint), this one respects
+    /// a book being hidden via `removeFromContinueListening`, so removal actually sticks.
+    /// The personalized-shelves response mixes several shelf types with different entity
+    /// shapes, so we pick out just the "continue-listening" shelf's entities by hand
+    /// rather than decoding the whole heterogeneous payload as one Codable type.
+    func continueListeningShelf(libraryId: String, limit: Int = 25) async throws -> [LibraryItem] {
+        let request = try authedRequest(
+            path: "api/libraries/\(libraryId)/personalized", query: [URLQueryItem(name: "limit", value: String(limit))]
+        )
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try Self.checkResponse(response)
+        guard let shelves = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] else { return [] }
+        guard let shelf = shelves.first(where: { $0["id"] as? String == "continue-listening" }) else { return [] }
+        guard let entities = shelf["entities"] else { return [] }
+        let entitiesData = try JSONSerialization.data(withJSONObject: entities)
+        return try JSONDecoder().decode([LibraryItem].self, from: entitiesData)
+    }
+
+    /// Hides a book from the Continue Listening shelf without altering its saved
+    /// position — matches the ABS server's own "remove from continue listening" affordance.
+    func removeFromContinueListening(itemId: String) async throws {
+        guard let progressId = try await mediaProgress().first(where: { $0.libraryItemId == itemId })?.id else { return }
+        let request = try authedRequest(path: "api/me/progress/\(progressId)/remove-from-continue-listening")
+        let (_, response) = try await URLSession.shared.data(for: request)
+        try Self.checkResponse(response)
+    }
+
     func updateProgress(itemId: String, currentTime: Double, duration: Double, isFinished: Bool) async throws {
         var request = try authedRequest(path: "api/me/progress/\(itemId)")
         request.httpMethod = "PATCH"

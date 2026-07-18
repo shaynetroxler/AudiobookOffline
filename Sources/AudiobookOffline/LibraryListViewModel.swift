@@ -5,6 +5,7 @@ import Observation
 @MainActor
 final class LibraryListViewModel {
     private(set) var items: [LibraryItem] = []
+    private(set) var continueListening: [LibraryItem] = []
     private(set) var isLoading = false
     private(set) var total = 0
     private(set) var errorMessage: String?
@@ -26,6 +27,35 @@ final class LibraryListViewModel {
         items = []
         currentPage = 0
         Task { await loadNextPage() }
+        Task { await loadContinueListening() }
+    }
+
+    /// Re-fetches the Continue Listening shelf without touching the paginated
+    /// full list — cheap enough to call every time the library screen appears,
+    /// so progress made on another device (e.g. an iPhone) surfaces immediately.
+    func refreshContinueListening() async {
+        await loadContinueListening()
+    }
+
+    private func loadContinueListening() async {
+        guard let libraryId, let client else { return }
+        do {
+            continueListening = try await client.continueListeningShelf(libraryId: libraryId)
+        } catch {
+            // Non-critical: the full list below still works, just without the shelf.
+        }
+    }
+
+    /// Removes an item from the Continue Listening shelf. Optimistic: the row disappears
+    /// immediately, and if the server call fails it'll simply reappear on the next refresh.
+    func removeFromContinueListening(_ item: LibraryItem) async {
+        guard let client else { return }
+        continueListening.removeAll { $0.id == item.id }
+        do {
+            try await client.removeFromContinueListening(itemId: item.id)
+        } catch {
+            print("AudiobookOffline: failed to remove \(item.id) from continue listening: \(error)")
+        }
     }
 
     private func searchDidChange() {

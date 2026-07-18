@@ -1,4 +1,5 @@
 import SwiftUI
+import AppKit
 
 enum LibraryTab: String, CaseIterable, Identifiable {
     case books = "Books"
@@ -51,6 +52,9 @@ struct LibraryView: View {
             guard let library = appState.selectedLibrary, let client = appState.client else { return }
             viewModel.configure(libraryId: library.id, client: client)
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            Task { await viewModel.refreshContinueListening() }
+        }
     }
 
     @ViewBuilder
@@ -99,24 +103,39 @@ struct LibraryView: View {
     private var itemsList: some View {
         @Bindable var viewModel = viewModel
         List {
-            ForEach(viewModel.items) { item in
-                Button {
-                    path.append(.item(item.id))
-                } label: {
-                    ItemRow(item: item)
-                }
-                .buttonStyle(.plain)
-                .onAppear {
-                    if item.id == viewModel.items.last?.id {
-                        Task { await viewModel.loadNextPage() }
+            if viewModel.searchText.isEmpty && !viewModel.continueListening.isEmpty {
+                Section("Continue Listening") {
+                    ForEach(viewModel.continueListening) { item in
+                        Button {
+                            path.append(.item(item.id))
+                        } label: {
+                            ItemRow(item: item)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
 
-            if viewModel.isLoading {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .padding()
+            Section(viewModel.continueListening.isEmpty ? "" : "All Books") {
+                ForEach(viewModel.items) { item in
+                    Button {
+                        path.append(.item(item.id))
+                    } label: {
+                        ItemRow(item: item)
+                    }
+                    .buttonStyle(.plain)
+                    .onAppear {
+                        if item.id == viewModel.items.last?.id {
+                            Task { await viewModel.loadNextPage() }
+                        }
+                    }
+                }
+
+                if viewModel.isLoading {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
             }
         }
         .searchable(text: $viewModel.searchText, placement: .toolbar, prompt: "Search books")
