@@ -128,6 +128,40 @@ struct ABSClient {
         try Self.checkResponse(response)
     }
 
+    /// Collections and series a user has curated on the server. Fetched with no
+    /// limit/page — the server treats an absent limit as "return everything",
+    /// which is fine since these lists are small compared to the full item list.
+    func collections(libraryId: String) async throws -> [ABSCollection] {
+        let request = try authedRequest(path: "api/libraries/\(libraryId)/collections")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try Self.checkResponse(response)
+        return try JSONDecoder().decode(CollectionsResponse.self, from: data).results
+    }
+
+    func series(libraryId: String) async throws -> [ABSSeries] {
+        // Unlike /collections (which slices in JS and treats a missing/zero limit as
+        // "no limit"), /series applies `limit` as a literal Sequelize LIMIT clause —
+        // an omitted or zero limit produces `LIMIT 0`, i.e. zero rows. Pass a limit
+        // generously above any realistic series count to fetch everything in one call.
+        let request = try authedRequest(
+            path: "api/libraries/\(libraryId)/series",
+            query: [
+                URLQueryItem(name: "sort", value: "name"),
+                URLQueryItem(name: "limit", value: "5000"),
+            ]
+        )
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try Self.checkResponse(response)
+        return try JSONDecoder().decode(SeriesResponse.self, from: data).results
+    }
+
+    func stats(libraryId: String) async throws -> LibraryStats {
+        let request = try authedRequest(path: "api/libraries/\(libraryId)/stats")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try Self.checkResponse(response)
+        return try JSONDecoder().decode(LibraryStats.self, from: data)
+    }
+
     func coverURL(itemId: String) -> URL? {
         var components = URLComponents(url: baseURL.appendingPathComponent("api/items/\(itemId)/cover"), resolvingAgainstBaseURL: false)
         components?.queryItems = [URLQueryItem(name: "token", value: token)]

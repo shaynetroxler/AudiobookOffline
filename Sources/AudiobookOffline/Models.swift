@@ -116,3 +116,76 @@ struct ProgressPatchBody: Codable {
     let progress: Double
     let isFinished: Bool
 }
+
+struct AuthorWithCount: Codable, Identifiable, Hashable {
+    let id: String
+    let name: String
+    let count: Int
+}
+
+struct GenreWithCount: Codable, Identifiable, Hashable {
+    let genre: String
+    let count: Int
+
+    var id: String { genre }
+}
+
+struct LongestItemStat: Codable, Identifiable, Hashable {
+    let id: String
+    let title: String
+    let duration: Double
+}
+
+struct LargestItemStat: Codable, Identifiable, Hashable {
+    let id: String
+    let title: String
+    let size: Double
+}
+
+/// Mirrors the Audiobookshelf server's GET /api/libraries/{id}/stats response.
+/// `totalAuthors`/`authorsWithCount` are absent for podcast libraries.
+struct LibraryStats: Codable {
+    let totalItems: Int
+    let totalSize: Double
+    let totalDuration: Double
+    let numAudioTracks: Int
+    let totalAuthors: Int?
+    let authorsWithCount: [AuthorWithCount]?
+    let totalGenres: Int
+    let genresWithCount: [GenreWithCount]
+    let longestItems: [LongestItemStat]
+    let largestItems: [LargestItemStat]
+}
+
+struct ABSCollection: Codable, Identifiable, Hashable {
+    let id: String
+    let name: String
+    let description: String?
+    let books: [LibraryItem]
+}
+
+struct CollectionsResponse: Codable {
+    let results: [ABSCollection]
+}
+
+/// A library item as it appears inside a series' `books` array — same shape as
+/// `LibraryItem` plus the item's position within that series.
+struct SeriesBookItem: Codable, Identifiable, Hashable {
+    let id: String
+    let libraryId: String
+    let media: MediaSummary
+    let sequence: String?
+
+    var asLibraryItem: LibraryItem { LibraryItem(id: id, libraryId: libraryId, media: media) }
+}
+
+struct ABSSeries: Codable, Identifiable, Hashable {
+    let id: String
+    let name: String
+    let description: String?
+    let books: [SeriesBookItem]
+}
+
+struct SeriesResponse: Codable {
+    let results: [ABSSeries]
+}

@@ -1,9 +1,18 @@
 import SwiftUI
 
+enum LibraryTab: String, CaseIterable, Identifiable {
+    case books = "Books"
+    case series = "Series"
+    case collections = "Collections"
+    var id: String { rawValue }
+}
+
 struct LibraryView: View {
     @Environment(AppState.self) private var appState
     @State private var viewModel = LibraryListViewModel()
-    @State private var path: [String] = []
+    @State private var path: [LibraryRoute] = []
+    @State private var showingStats = false
+    @State private var selectedTab: LibraryTab = .books
 
     var body: some View {
         @Bindable var appState = appState
@@ -21,9 +30,16 @@ struct LibraryView: View {
             }
         } detail: {
             NavigationStack(path: $path) {
-                itemsList
-                    .navigationDestination(for: String.self) { itemId in
-                        PlayerHostView(itemId: itemId)
+                tabContent
+                    .navigationDestination(for: LibraryRoute.self) { route in
+                        switch route {
+                        case .item(let itemId):
+                            PlayerHostView(itemId: itemId)
+                        case .series(let series):
+                            SeriesDetailView(series: series, path: $path)
+                        case .collection(let collection):
+                            CollectionDetailView(collection: collection, path: $path)
+                        }
                     }
             }
         }
@@ -38,12 +54,54 @@ struct LibraryView: View {
     }
 
     @ViewBuilder
+    private var tabContent: some View {
+        Group {
+            switch selectedTab {
+            case .books:
+                itemsList
+            case .series:
+                if let library = appState.selectedLibrary {
+                    SeriesListView(libraryId: library.id, path: $path)
+                }
+            case .collections:
+                if let library = appState.selectedLibrary {
+                    CollectionsListView(libraryId: library.id, path: $path)
+                }
+            }
+        }
+        .navigationTitle(appState.selectedLibrary?.name ?? "Library")
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Picker("View", selection: $selectedTab) {
+                    ForEach(LibraryTab.allCases) { tab in
+                        Text(tab.rawValue).tag(tab)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    showingStats = true
+                } label: {
+                    Label("Stats", systemImage: "chart.bar.xaxis")
+                }
+                .disabled(appState.selectedLibrary == nil)
+            }
+        }
+        .sheet(isPresented: $showingStats) {
+            if let library = appState.selectedLibrary {
+                StatsView(libraryId: library.id, libraryName: library.name)
+            }
+        }
+    }
+
+    @ViewBuilder
     private var itemsList: some View {
         @Bindable var viewModel = viewModel
         List {
             ForEach(viewModel.items) { item in
                 Button {
-                    path.append(item.id)
+                    path.append(.item(item.id))
                 } label: {
                     ItemRow(item: item)
                 }
@@ -62,7 +120,6 @@ struct LibraryView: View {
             }
         }
         .searchable(text: $viewModel.searchText, placement: .toolbar, prompt: "Search books")
-        .navigationTitle(appState.selectedLibrary?.name ?? "Library")
         .overlay {
             if let error = viewModel.errorMessage, viewModel.items.isEmpty {
                 ContentUnavailableView(

@@ -17,10 +17,10 @@ struct AudiobookOfflineApp: App {
         }
         .commands {
             CommandGroup(replacing: .help) {
-                Button("Keyboard Shortcuts") {
+                Button("Tips & Shortcuts") {
                     let alert = NSAlert()
-                    alert.messageText = "Keyboard Shortcuts"
-                    alert.informativeText = "Space — Play / Pause (while a book is open)"
+                    alert.messageText = "Tips & Shortcuts"
+                    alert.informativeText = "Space — Play / Pause (while a book is open)\n\nToolbar bar-graph icon — View library stats (item count, hours, top authors, genres, and more)\n\nBooks / Series / Collections tabs — Browse by series or collection instead of the flat book list (these are created on the server; the app only displays them)"
                     alert.addButton(withTitle: "OK")
                     alert.runModal()
                 }
