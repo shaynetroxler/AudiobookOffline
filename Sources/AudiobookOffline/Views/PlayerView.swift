@@ -112,19 +112,34 @@ struct PlayerView: View {
                     downloadControl
                 }
 
+                let chapter = viewModel.currentChapter
+                let sliderRange: ClosedRange<Double> = {
+                    if let chapter, chapter.end > chapter.start {
+                        return chapter.start...chapter.end
+                    }
+                    return 0...max(viewModel.totalDuration, 1)
+                }()
+
                 Slider(
                     value: Binding(
                         get: { viewModel.globalCurrentTime },
                         set: { viewModel.seekGlobal($0, autoplayAfter: viewModel.isPlaying) }
                     ),
-                    in: 0...max(viewModel.totalDuration, 1)
+                    in: sliderRange
                 )
                 .padding(.horizontal)
 
+                if let chapter {
+                    Text(chapter.title)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+
                 HStack {
-                    Text(formatClock(viewModel.globalCurrentTime))
+                    Text(formatClock(viewModel.globalCurrentTime - (chapter?.start ?? 0)))
                     Spacer()
-                    Text(formatClock(viewModel.totalDuration))
+                    Text(formatClock(sliderRange.upperBound - sliderRange.lowerBound))
                 }
                 .font(.caption)
                 .monospacedDigit()
@@ -132,6 +147,11 @@ struct PlayerView: View {
                 .padding(.horizontal)
 
                 HStack(spacing: 28) {
+                    Button { viewModel.jumpToPreviousChapter() } label: {
+                        Image(systemName: "backward.end.fill").font(.title2)
+                    }
+                    .disabled(!viewModel.hasPreviousChapter)
+
                     Button { viewModel.skip(-30) } label: {
                         Image(systemName: "gobackward.30").font(.title)
                     }
@@ -142,6 +162,11 @@ struct PlayerView: View {
                     Button { viewModel.skip(30) } label: {
                         Image(systemName: "goforward.30").font(.title)
                     }
+
+                    Button { viewModel.jumpToNextChapter() } label: {
+                        Image(systemName: "forward.end.fill").font(.title2)
+                    }
+                    .disabled(!viewModel.hasNextChapter)
                 }
                 .buttonStyle(.plain)
 

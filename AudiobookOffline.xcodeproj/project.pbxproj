@@ -295,7 +295,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shayne.audiobookoffline;
 				PRODUCT_NAME = AudiobookOffline;
 				SDKROOT = macosx;
@@ -373,7 +373,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shayne.audiobookoffline;
 				PRODUCT_NAME = AudiobookOffline;
 				SDKROOT = macosx;

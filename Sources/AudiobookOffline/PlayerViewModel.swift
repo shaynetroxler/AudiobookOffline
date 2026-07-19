@@ -31,6 +31,10 @@ final class PlayerViewModel {
         (trackOffsets[safe: currentTrackIndex] ?? 0) + currentTimeInTrack
     }
 
+    var currentChapter: Chapter? {
+        chapters.first(where: { $0.start <= globalCurrentTime && globalCurrentTime < $0.end })
+    }
+
     private let player = AVPlayer()
     private let trackURLs: [URL]
     private let trackDurations: [Double]
@@ -183,7 +187,7 @@ final class PlayerViewModel {
 
     private func checkEndOfChapterSleepTimer() {
         guard sleepTimerOption == .endOfChapter else { return }
-        guard let chapter = chapters.first(where: { $0.start <= globalCurrentTime && globalCurrentTime < $0.end }) else { return }
+        guard let chapter = currentChapter else { return }
         guard globalCurrentTime >= chapter.end else { return }
         pause()
         sleepTimerOption = .off
@@ -218,6 +222,28 @@ final class PlayerViewModel {
 
     func jumpToChapter(_ chapter: Chapter) {
         seekGlobal(chapter.start, autoplayAfter: isPlaying)
+    }
+
+    var hasPreviousChapter: Bool {
+        guard let chapter = currentChapter else { return false }
+        return chapters.contains { $0.start < chapter.start }
+    }
+
+    var hasNextChapter: Bool {
+        guard let chapter = currentChapter else { return false }
+        return chapters.contains { $0.start > chapter.start }
+    }
+
+    func jumpToPreviousChapter() {
+        guard let chapter = currentChapter else { return }
+        guard let previous = chapters.filter({ $0.start < chapter.start }).max(by: { $0.start < $1.start }) else { return }
+        jumpToChapter(previous)
+    }
+
+    func jumpToNextChapter() {
+        guard let chapter = currentChapter else { return }
+        guard let next = chapters.filter({ $0.start > chapter.start }).min(by: { $0.start < $1.start }) else { return }
+        jumpToChapter(next)
     }
 
     private func startReportingLoop() {
