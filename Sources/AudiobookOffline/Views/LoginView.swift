@@ -15,10 +15,13 @@ struct LoginView: View {
 
             Form {
                 TextField("Server address (e.g. http://192.168.1.10:13378)", text: $serverURL)
+                    .frame(maxWidth: .infinity)
                 TextField("Username", text: $username)
+                    .frame(maxWidth: .infinity)
                 SecureField("Password", text: $password)
+                    .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: 320)
+            .frame(maxWidth: 400)
 
             if let error = appState.loginError {
                 Text(error)
@@ -41,6 +44,6 @@ struct LoginView: View {
             .disabled(appState.isLoggingIn || serverURL.isEmpty || username.isEmpty || password.isEmpty)
         }
         .padding(32)
-        .frame(minWidth: 420, minHeight: 320)
+        .frame(minWidth: 500, minHeight: 320)
     }
 }
